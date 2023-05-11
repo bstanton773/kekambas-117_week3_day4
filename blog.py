@@ -43,6 +43,22 @@ class Blog:
         self.current_user = None
         print("You have successfully logged out.")
 
+    # Method to create a new post
+    def create_new_post(self):
+        # Check to make sure the user is logged in
+        if self.current_user is not None:
+            # Get the title and body from the end user
+            title = input('Enter post title: ')
+            body = input('Enter post body: ')
+            # Create a new instance with input + logged in user
+            new_post = Post(title, body, self.current_user)
+            # Add the new post instance to our blog's list of posts
+            self.posts.append(new_post)
+            print(f"{new_post.title} has been created!")
+        # if not logged in
+        else:
+            print("You must be logged in to perform this action") # 401 Unauthorized Status Code
+
 
 class User:
     id_counter = 1
@@ -64,7 +80,25 @@ class User:
 
 
 class Post:
-    pass
+    id_counter = 1
+    
+    def __init__(self, title, body, author):
+        self.title = title
+        self.body = body
+        self.author = author
+        self.id = Post.id_counter
+        Post.id_counter += 1
+
+    def __repr__(self):
+        return f"<Post {self.id}|{self.title}>"
+    
+    def __str__(self):
+        formatted_post = f"""
+        {self.id} - {self.title.title()}
+        By: {self.author}
+        {self.body}
+        """
+        return formatted_post
 
 
 # Define a function to run the blog
@@ -97,13 +131,16 @@ def run_blog():
         # If the current user is logged in (current_user is not None)
         else:
             # Print the menu options for a logged in user
-            print('1. Log Out')
+            print('1. Log Out\n2. Create A New Post')
             to_do = input('Which option would you like to do? ')
-            while to_do not in {'1'}:
-                to_do = input('Invalid option. Please choose 1 ')
+            while to_do not in {'1', '2'}:
+                to_do = input('Invalid option. Please choose 1 or 2 ')
             if to_do == '1':
                 # Log the user out of the blog
                 my_blog.log_user_out()
+            elif to_do == '2':
+                # Create a new blog post with the logged in user
+                my_blog.create_new_post()
 
 # Call the function to actually start blog
 run_blog()
