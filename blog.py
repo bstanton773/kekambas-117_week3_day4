@@ -37,6 +37,12 @@ class Blog:
         else:
             print("Username and/or password is incorrect.")
 
+    # Method to log a user out
+    def log_user_out(self):
+        # Change the current_user attribute back to None
+        self.current_user = None
+        print("You have successfully logged out.")
+
 
 class User:
     id_counter = 1
@@ -76,7 +82,7 @@ def run_blog():
             to_do = input('Which option would you like to do? ')
             # Keep asking if user chooses an invalid option
             while to_do not in {'1', '5', '2'}:
-                to_do = input('Invalid option. Please choose 1, 2, or 5')
+                to_do = input('Invalid option. Please choose 1, 2, or 5 ')
             # If they choose '5', quit the program
             if to_do == '5':
                 print("Thanks for checking out our blog")
@@ -91,10 +97,13 @@ def run_blog():
         # If the current user is logged in (current_user is not None)
         else:
             # Print the menu options for a logged in user
-            print('Quit')
+            print('1. Log Out')
             to_do = input('Which option would you like to do? ')
-            if to_do == 'quit':
-                break
+            while to_do not in {'1'}:
+                to_do = input('Invalid option. Please choose 1 ')
+            if to_do == '1':
+                # Log the user out of the blog
+                my_blog.log_user_out()
 
 # Call the function to actually start blog
 run_blog()
